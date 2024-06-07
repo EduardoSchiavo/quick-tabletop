@@ -17,6 +17,14 @@ const Token = ({x, y}: Props) => {
 
     const fixedX=200;
     const fixedY=200;
+    const gridSize = 96; 
+
+    const handleDragEnd = ()=>{
+      
+      const newX: number = Math.round(Math.round(position.x) / gridSize )*gridSize;
+      const newY: number = Math.round(Math.round(position.y) / gridSize )*gridSize;
+
+      setPosition({x:newX, y:newY})}
 
     return <Image  draggable 
     width={96} height={96} x={position.x} y={position.y} 
@@ -24,7 +32,7 @@ const Token = ({x, y}: Props) => {
       x: e.target.x(),
       y: e.target.y()
   })}
-    onDragEnd={()=>{setPosition({x:fixedX, y:fixedY})}}
+    onDragEnd={handleDragEnd}
     image={image} />;
   };
 
