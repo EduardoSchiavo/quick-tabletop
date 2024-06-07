@@ -1,11 +1,11 @@
-import map from '../assets/map.jpeg'
+import map from '../assets/tavern.jpg'
 import useImage from 'use-image';
 import { Image } from 'react-konva';
 
 
 const Scenario = () => {
     const [image] = useImage(map);
-    return <Image  image={image} />;
+    return <Image  height={960} width={1344} image={image} />;
   };
 
 

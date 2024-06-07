@@ -2,7 +2,8 @@
 
 import { Layer, Stage } from "react-konva";
 import Token from "../Token";
-import Scene from "../Scenario";
+import Scenario from "../Scenario";
+import Grid from "../Grid";
 
 
 const BattleMap = () => {
@@ -13,13 +14,17 @@ const BattleMap = () => {
         x:500, y:5
     }
 
+
+
     return <Stage width={window.innerWidth} height={window.innerHeight}>
         <Layer> 
-        <Scene/> 
+        <Scenario/> 
         </Layer>
+        <Grid/>
         <Layer>
-        <Token {...startingPos}/>
+        <Token {...startingPos} />
         </Layer>
+
     </Stage>
 }
 
