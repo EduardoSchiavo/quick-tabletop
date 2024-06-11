@@ -15,8 +15,6 @@ const Token = ({x, y}: Props) => {
     const [image] = useImage(sampleToken);
     const [position, setPosition] = useState({x, y})
 
-    const fixedX=200;
-    const fixedY=200;
     const gridSize = 96; 
 
     const handleDragEnd = ()=>{

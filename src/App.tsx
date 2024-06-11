@@ -1,38 +1,47 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import BattleMap from './BattleMap'
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
 
-function App() {
+function App(this: any) {
   const [count, setCount] = useState(0)
 
-  // return (
-  //   <>
-  //     <div>
-  //       <a href="https://vitejs.dev" target="_blank">
-  //         <img src={viteLogo} className="logo" alt="Vite logo" />
-  //       </a>
-  //       <a href="https://react.dev" target="_blank">
-  //         <img src={reactLogo} className="logo react" alt="React logo" />
-  //       </a>
-  //     </div>
-  //     <h1>Vite + React</h1>
-  //     <div className="card">
-  //       <button onClick={() => setCount((count) => count + 1)}>
-  //         count is {count}
-  //       </button>
-  //       <p>
-  //         Edit <code>src/App.tsx</code> and save to test HMR
-  //       </p>
-  //     </div>
-  //     <p className="read-the-docs">
-  //       Click on the Vite and React logos to learn more
-  //     </p>
-  //   </>
-  // )
+  const options = [
+    'one', 'two', 'three'
+  ];
+  const defaultOption = options[0];
 
-  return <BattleMap/>;
+  return (
+    <div className="app-container">
+      <div className="map-container">
+        <BattleMap />
+      </div>
+      <div className="controls-container">
+      <Dropdown options={options}  value={defaultOption} placeholder="Select an option" />
+
+        {/* <div className="dropdown">
+          <label htmlFor="dropdown1">Select Map:</label>
+          <select id="dropdown1">
+            <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+            <option value="option3">Option 3</option>
+          </select>
+        </div> */}
+        <div className="dropdown">
+          <label htmlFor="dropdown2">Select Token:</label>
+          <select id="dropdown2">
+            <option value="optionA">Option A</option>
+            <option value="optionB">Option B</option>
+            <option value="optionC">Option C</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  );
+
+
+  // return <BattleMap/>;
 }
 
 export default App
