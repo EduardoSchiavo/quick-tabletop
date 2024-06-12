@@ -1,5 +1,5 @@
 // import sampleToken from 'assets/sampletoken.png' //TODO: add image
-import sampleToken from '../assets/dryf.jpg' //TODO: add image
+// import sampleToken from '../assets/dryf.jpg' //TODO: add image
 
 import useImage from 'use-image';
 import { Image } from 'react-konva';
@@ -7,13 +7,16 @@ import { useState } from 'react';
 
 
 interface Props {
+    name: string;
+    imgPath: string;
     x: number;
     y: number;
 }
 
-const Token = ({x, y}: Props) => {
-    const [image] = useImage(sampleToken);
+const Token = ({name, imgPath, x, y}: Props) => {
+    const [image] = useImage(imgPath);
     const [position, setPosition] = useState({x, y})
+    console.log(name)
 
     const gridSize = 96; 
 
