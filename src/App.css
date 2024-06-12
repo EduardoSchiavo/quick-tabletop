@@ -6,8 +6,8 @@
 }
 
 .map-container {
-  width: 1500px; /* Assuming your map has a fixed width of 800px */
-  height: auto; /* Takes up 75% of the available width */
+  width: 1500px; 
+  height: auto; 
   /* display: flex; */
   justify-content: center;
   align-items: center;

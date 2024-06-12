@@ -5,7 +5,15 @@ import Token from "../Token";
 import Scenario from "../Scenario";
 import Grid from "../Grid";
 
-const BattleMap = () => {
+
+interface Props {
+    showGrid: boolean;
+    backgroundImgPath: string;
+}
+
+const BattleMap = ({showGrid, backgroundImgPath}: Props) => {
+
+
   const startingPos = {
     x: 500,
     y: 5,
@@ -14,12 +22,16 @@ const BattleMap = () => {
   const fixedWidth = 1500;
   const fixedHeight = 1500;
 
+//   const imgPath = map;
+  console.log("EEEEEE", backgroundImgPath);
+  
+  
   return (
     <Stage width={fixedWidth} height={fixedHeight}>
       <Layer>
-        <Scenario />
+        <Scenario imgPath={backgroundImgPath}/>
       </Layer>
-      <Grid />
+      {showGrid && <Grid />}
       <Layer>
         <Token {...startingPos} />
       </Layer>
