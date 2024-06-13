@@ -1,5 +1,3 @@
-// import sampleToken from 'assets/sampletoken.png' //TODO: add image
-// import sampleToken from '../assets/dryf.jpg' //TODO: add image
 
 import useImage from 'use-image';
 import { Image } from 'react-konva';
@@ -24,7 +22,7 @@ const Token = ({name, imgPath, x, y}: Props) => {
       
       const newX: number = Math.round(Math.round(position.x) / gridSize )*gridSize;
       const newY: number = Math.round(Math.round(position.y) / gridSize )*gridSize;
-
+      
       setPosition({x:newX, y:newY})}
 
     return <Image  draggable 

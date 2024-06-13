@@ -3,6 +3,7 @@ import "./App.css";
 import BattleMap from "./BattleMap";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
+import TokenGallery from "./TokenGallery";
 
 
 interface TokenData {
@@ -20,27 +21,34 @@ function App() {
   ]);
 
 
-  const tokenOptions = [
-    {
-      value: "/assets/default/tokens/dryf.jpg",
-      label: "Dryf",
-    },
-    {
-      value: "/assets/default/tokens/Guthma.jpg",
-      label: "Guthma",
-    },
-    {
-      value: "/assets/default/tokens/Larhut.jpg",
-      label: "Larhut",
-    },
-    {
-      value: "/assets/default/tokens/Kili.jpg",
-      label: "Kili",
-    },
-    {
-      value: "/assets/default/tokens/Eldera.jpg",
-      label: "Eldera",
-    },
+  // const tokenOptions = [
+  //   {
+  //     value: "/assets/default/tokens/dryf.jpg",
+  //     label: "Dryf",
+  //   },
+  //   {
+  //     value: "/assets/default/tokens/Guthma.jpg",
+  //     label: "Guthma",
+  //   },
+  //   {
+  //     value: "/assets/default/tokens/Larhut.jpg",
+  //     label: "Larhut",
+  //   },
+  //   {
+  //     value: "/assets/default/tokens/Kili.jpg",
+  //     label: "Kili",
+  //   },
+  //   {
+  //     value: "/assets/default/tokens/Eldera.jpg",
+  //     label: "Eldera",
+  //   },
+  // ];
+
+  const tokenOptionsGV: TokenData[] = [
+    { name: "Goblin", imgPath: "/assets/default/tokens/dryf.jpg" },
+    { name: "Bugbear", imgPath: "/assets/default/tokens/Guthma.jpg" },
+    { name: "Wizard", imgPath: "/assets/default/tokens/Larhut.jpg" },
+    { name: "Witch", imgPath: "/assets/default/tokens/Eldera.jpg" },
   ];
 
   const imageOptions = [
@@ -54,11 +62,17 @@ function App() {
     setShowGrid(!showGrid);
   };
 
-  const addToken = (option: any) => {
+  const addTokenGV = (token: TokenData) => {
     const newTokenList = tokenList.slice();
-    newTokenList.push({ name: option.label, imgPath: option.value });
+    newTokenList.push(token);
     setTokenList(newTokenList); 
   };
+
+  // const addToken = (option: any) => {
+  //   const newTokenList = tokenList.slice();
+  //   newTokenList.push({ name: option.label, imgPath: option.value });
+  //   setTokenList(newTokenList); 
+  // };
 
   const clearAll = () => {
     setTokenList([]);
@@ -89,18 +103,22 @@ function App() {
             placeholder="Select an image"
           />
         </div>
-        <div className="dropdown">
+        {/* <div className="dropdown">
           <label htmlFor="dropdown2">Chose your token:</label>
           <Dropdown
             options={tokenOptions}
             onChange={addToken}
             value={"/assets/default/tokens/dryf.jpg"}
             placeholder="Select a token"
+            arrowOpen={true}
           />
+        </div> */}
+        <div className="token-gallery-container">
+          <label>Choose your token:</label>
+          <TokenGallery tokens={tokenOptionsGV} onAddToken={addTokenGV} />
         </div>
         <div>
         <button onClick={clearAll}>Clear Tokens</button>
-
         </div>
         <div>
           <label>
