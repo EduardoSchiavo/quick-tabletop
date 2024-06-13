@@ -16,7 +16,7 @@ interface Props {
 const Token = ({name, imgPath, x, y}: Props) => {
     const [image] = useImage(imgPath);
     const [position, setPosition] = useState({x, y})
-    console.log(name)
+    // console.log(name)
 
     const gridSize = 96; 
 

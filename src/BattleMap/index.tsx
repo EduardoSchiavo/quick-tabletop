@@ -24,7 +24,6 @@ const BattleMap = ({ showGrid, backgroundImgPath, tokens }: Props) => {
 
   const fixedWidth = 1500;
   const fixedHeight = 1500;
-  console.log("battlemap", tokens);
 
   return (
     <Stage width={fixedWidth} height={fixedHeight}>

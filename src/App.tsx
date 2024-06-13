@@ -3,8 +3,7 @@ import "./App.css";
 import BattleMap from "./BattleMap";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
-import Token from "./Token";
-// import map from "./assets/tavern.jpg"
+
 
 interface TokenData {
   name: string;
@@ -12,7 +11,6 @@ interface TokenData {
 }
 
 function App() {
-  // const [count, setCount] = useState(0);
   const [showGrid, setShowGrid] = useState(true);
   const [backgroundImgPath, setBackgroundImgPath] = useState(
     "/assets/default/maps/tavern.jpg"
@@ -21,14 +19,27 @@ function App() {
     { name: "default", imgPath: "/assets/default/tokens/dryf.jpg" },
   ]);
 
+
   const tokenOptions = [
     {
       value: "/assets/default/tokens/dryf.jpg",
       label: "Dryf",
     },
     {
-      value: "/assets/default/tokens/goblin.jpeg",
-      label: "Goblin",
+      value: "/assets/default/tokens/Guthma.jpg",
+      label: "Guthma",
+    },
+    {
+      value: "/assets/default/tokens/Larhut.jpg",
+      label: "Larhut",
+    },
+    {
+      value: "/assets/default/tokens/Kili.jpg",
+      label: "Kili",
+    },
+    {
+      value: "/assets/default/tokens/Eldera.jpg",
+      label: "Eldera",
     },
   ];
 
@@ -37,17 +48,21 @@ function App() {
     { value: "/assets/default/maps/tavern-scribbled.jpg", label: "Scribbled" },
   ];
 
+
+
   const toggleGrid = () => {
     setShowGrid(!showGrid);
   };
 
   const addToken = (option: any) => {
-    // tokenList.push({ name: option.label, imgPath: option.value });
     const newTokenList = tokenList.slice();
     newTokenList.push({ name: option.label, imgPath: option.value });
     setTokenList(newTokenList); 
-    console.log("TOKENS: ", tokenList);
   };
+
+  const clearAll = () => {
+    setTokenList([]);
+  }
 
   const handleImageChange = (option: any) => {
     setBackgroundImgPath(option.value);
@@ -84,7 +99,18 @@ function App() {
           />
         </div>
         <div>
-          <button onClick={toggleGrid}>Show Grid</button>
+        <button onClick={clearAll}>Clear Tokens</button>
+
+        </div>
+        <div>
+          <label>
+          Show Grid
+            <input 
+              type="checkbox" 
+              checked={showGrid} 
+              onChange={toggleGrid} 
+            />
+          </label>
         </div>
       </div>
     </div>
