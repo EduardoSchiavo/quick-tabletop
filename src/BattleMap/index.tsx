@@ -13,7 +13,7 @@ interface TokenData {
 interface Props {
   showGrid: boolean;
   backgroundImgPath: string;
-  tokens: TokenData[];
+  tokens: object;
 }
 
 const BattleMap = ({ showGrid, backgroundImgPath, tokens }: Props) => {
@@ -24,7 +24,7 @@ const BattleMap = ({ showGrid, backgroundImgPath, tokens }: Props) => {
 
   const fixedWidth = 1500;
   const fixedHeight = 1500;
-
+  console.log(tokens)
   return (
     <Stage width={fixedWidth} height={fixedHeight}>
       <Layer>
@@ -32,14 +32,14 @@ const BattleMap = ({ showGrid, backgroundImgPath, tokens }: Props) => {
       </Layer>
       {showGrid && <Grid />}
       <Layer>
-        {tokens.map((token, index) => {
+        {Object.entries(tokens).map(([key, token]) => {
           return <Token
-            key={index}
+            key={key}
             name={token.name}
             imgPath={token.imgPath}
             x={startingPos.x}
             y={startingPos.y}
-          />;
+          />
         })}
       </Layer>
     </Stage>
