@@ -13,10 +13,16 @@ interface TokenData {
 interface Props {
   showGrid: boolean;
   backgroundImgPath: string;
-  tokens: TokenData[];
+  tokens: object;
+  deleteToken: (key: any) => void;
 }
 
-const BattleMap = ({ showGrid, backgroundImgPath, tokens }: Props) => {
+const BattleMap = ({
+  showGrid,
+  backgroundImgPath,
+  tokens,
+  deleteToken,
+}: Props) => {
   const startingPos = {
     x: 500,
     y: 5,
@@ -24,6 +30,13 @@ const BattleMap = ({ showGrid, backgroundImgPath, tokens }: Props) => {
 
   const fixedWidth = 1500;
   const fixedHeight = 1500;
+  console.log(tokens);
+
+  const handleDeletion = (key: number, pos: { x: number; y: number }) => {
+    if (pos.x > fixedWidth || pos.y > 1000) {
+      deleteToken(key);
+    }
+  };
 
   return (
     <Stage width={fixedWidth} height={fixedHeight}>
@@ -32,14 +45,17 @@ const BattleMap = ({ showGrid, backgroundImgPath, tokens }: Props) => {
       </Layer>
       {showGrid && <Grid />}
       <Layer>
-        {tokens.map((token, index) => {
-          return <Token
-            key={index}
-            name={token.name}
-            imgPath={token.imgPath}
-            x={startingPos.x}
-            y={startingPos.y}
-          />;
+        {Object.entries(tokens).map(([key, token]) => {
+          return (
+            <Token
+              id={key}
+              name={token.name}
+              imgPath={token.imgPath}
+              x={startingPos.x}
+              y={startingPos.y}
+              handleDeletion={handleDeletion}
+            />
+          );
         })}
       </Layer>
     </Stage>

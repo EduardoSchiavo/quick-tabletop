@@ -3,7 +3,7 @@ import "./App.css";
 import BattleMap from "./BattleMap";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
-
+import TokenGallery from "./TokenGallery";
 
 interface TokenData {
   name: string;
@@ -15,68 +15,59 @@ function App() {
   const [backgroundImgPath, setBackgroundImgPath] = useState(
     "/assets/default/maps/tavern.jpg"
   );
-  const [tokenList, setTokenList] = useState<TokenData[]>([
-    { name: "default", imgPath: "/assets/default/tokens/dryf.jpg" },
+  const [displayedTokens, setDisplayedTokens] = useState<object>([
+    { 0: { name: "default", imgPath: "/assets/default/tokens/dryf.jpg" } },
   ]);
 
-
-  const tokenOptions = [
-    {
-      value: "/assets/default/tokens/dryf.jpg",
-      label: "Dryf",
-    },
-    {
-      value: "/assets/default/tokens/Guthma.jpg",
-      label: "Guthma",
-    },
-    {
-      value: "/assets/default/tokens/Larhut.jpg",
-      label: "Larhut",
-    },
-    {
-      value: "/assets/default/tokens/Kili.jpg",
-      label: "Kili",
-    },
-    {
-      value: "/assets/default/tokens/Eldera.jpg",
-      label: "Eldera",
-    },
+  const tokenOptions: TokenData[] = [
+    { name: "Goblin", imgPath: "/assets/default/tokens/dryf.jpg" },
+    { name: "Bugbear", imgPath: "/assets/default/tokens/Guthma.jpg" },
+    { name: "Wizard", imgPath: "/assets/default/tokens/Larhut.jpg" },
+    { name: "Witch", imgPath: "/assets/default/tokens/Eldera.jpg" },
   ];
+
 
   const imageOptions = [
     { value: "/assets/default/maps/tavern.jpg", label: "Tavern" },
     { value: "/assets/default/maps/tavern-scribbled.jpg", label: "Scribbled" },
   ];
 
-
-
   const toggleGrid = () => {
     setShowGrid(!showGrid);
   };
 
-  const addToken = (option: any) => {
-    const newTokenList = tokenList.slice();
-    newTokenList.push({ name: option.label, imgPath: option.value });
-    setTokenList(newTokenList); 
+  const addToken = (token: TokenData) => {
+    setDisplayedTokens((displayedTokens) => {
+      const keys = Object.keys(displayedTokens).map(Number);
+      const newKey = keys.length > 0 ? Math.max(...keys) + 1 : 0;
+      return { ...displayedTokens, [newKey]: token };
+    });
   };
 
   const clearAll = () => {
-    setTokenList([]);
-  }
+    setDisplayedTokens({});
+  };
 
   const handleImageChange = (option: any) => {
     setBackgroundImgPath(option.value);
   };
 
+  const deleteToken = (key: any)=>{
+    console.log("deleting", key);
+    console.log("deleting");
+    setDisplayedTokens((prevState) => {
+      const { [key]: _, ...rest } = prevState;
+      return rest;
+  })};
+
   return (
     <div className="app-container">
       <div className="map-container">
         <BattleMap
-          {...{
-            showGrid: showGrid,
-            backgroundImgPath: backgroundImgPath,
-            tokens: tokenList,
-          }}
+          showGrid={showGrid}
+          backgroundImgPath={backgroundImgPath}
+          tokens={displayedTokens}
+          deleteToken={deleteToken}
         />
       </div>
       <div className="controls-container">
@@ -89,27 +80,17 @@ function App() {
             placeholder="Select an image"
           />
         </div>
-        <div className="dropdown">
-          <label htmlFor="dropdown2">Chose your token:</label>
-          <Dropdown
-            options={tokenOptions}
-            onChange={addToken}
-            value={"/assets/default/tokens/dryf.jpg"}
-            placeholder="Select a token"
-          />
+        <div className="token-gallery-container">
+          <label>Choose your token:</label>
+          <TokenGallery tokens={tokenOptions} onAddToken={addToken} />
         </div>
         <div>
-        <button onClick={clearAll}>Clear Tokens</button>
-
+          <button onClick={clearAll}>Clear Tokens</button>
         </div>
         <div>
           <label>
-          Show Grid
-            <input 
-              type="checkbox" 
-              checked={showGrid} 
-              onChange={toggleGrid} 
-            />
+            Show Grid
+            <input type="checkbox" checked={showGrid} onChange={toggleGrid} />
           </label>
         </div>
       </div>

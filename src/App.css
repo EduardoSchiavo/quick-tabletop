@@ -11,7 +11,8 @@
   /* display: flex; */
   justify-content: center;
   align-items: center;
-  border: 2px solid green;
+  /* border: 2px solid green; */
+  background-color: rgb(37, 67, 54);
   padding: 10px;
   overflow: hidden;
 }
@@ -22,7 +23,60 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 2px solid blue;
+  /* border: 2px solid blue; */
+  background-color: rgb(107, 138, 122);
   padding: 10px;
 }
 
+.dropdown, .token-gallery-container {
+  background-color: rgb(183, 181, 151);
+  margin-bottom: 20px;
+}
+
+.token-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  padding: 5px;
+  gap: 10px;
+}
+
+.token-item {
+  background-color: rgb(218, 211, 190);
+  padding: 10px;
+  display: flex;
+  /* flex: 1; */
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+}
+
+.token-image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+.token-info {
+  display: flex;
+  /* flex: 1; */
+  flex-direction: row;
+  align-items: center;
+  margin-top: 2px;
+  width: 100%;
+}
+
+.token-info span {
+  margin-bottom: 5px;
+  padding: 2px 5px;
+
+}
+
+.token-info button {
+  padding: 2px 5px;
+  /* width: 30px; */
+  position: absolute;
+  right: 10px; /* Distance from the right margin */
+  top: 50%; /* Vertically center the button */
+  transform: translateY(-50%); /* Adjust vertical centering */
+}
