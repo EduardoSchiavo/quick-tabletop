@@ -14,9 +14,15 @@ interface Props {
   showGrid: boolean;
   backgroundImgPath: string;
   tokens: object;
+  deleteToken: (key: any) => void;
 }
 
-const BattleMap = ({ showGrid, backgroundImgPath, tokens }: Props) => {
+const BattleMap = ({
+  showGrid,
+  backgroundImgPath,
+  tokens,
+  deleteToken,
+}: Props) => {
   const startingPos = {
     x: 500,
     y: 5,
@@ -24,7 +30,14 @@ const BattleMap = ({ showGrid, backgroundImgPath, tokens }: Props) => {
 
   const fixedWidth = 1500;
   const fixedHeight = 1500;
-  console.log(tokens)
+  console.log(tokens);
+
+  const handleDeletion = (key: number, pos: { x: number; y: number }) => {
+    if (pos.x > fixedWidth || pos.y > 1000) {
+      deleteToken(key);
+    }
+  };
+
   return (
     <Stage width={fixedWidth} height={fixedHeight}>
       <Layer>
@@ -33,13 +46,16 @@ const BattleMap = ({ showGrid, backgroundImgPath, tokens }: Props) => {
       {showGrid && <Grid />}
       <Layer>
         {Object.entries(tokens).map(([key, token]) => {
-          return <Token
-            key={key}
-            name={token.name}
-            imgPath={token.imgPath}
-            x={startingPos.x}
-            y={startingPos.y}
-          />
+          return (
+            <Token
+              id={key}
+              name={token.name}
+              imgPath={token.imgPath}
+              x={startingPos.x}
+              y={startingPos.y}
+              handleDeletion={handleDeletion}
+            />
+          );
         })}
       </Layer>
     </Stage>

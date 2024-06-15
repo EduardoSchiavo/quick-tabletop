@@ -37,30 +37,37 @@ function App() {
   };
 
   const addToken = (token: TokenData) => {
-    setDisplayedTokens((tokenList) => {
-      const keys = Object.keys(tokenList).map(Number);
+    setDisplayedTokens((displayedTokens) => {
+      const keys = Object.keys(displayedTokens).map(Number);
       const newKey = keys.length > 0 ? Math.max(...keys) + 1 : 0;
-      return { ...tokenList, [newKey]: token };
+      return { ...displayedTokens, [newKey]: token };
     });
   };
 
   const clearAll = () => {
-    setDisplayedTokens([]);
+    setDisplayedTokens({});
   };
 
   const handleImageChange = (option: any) => {
     setBackgroundImgPath(option.value);
   };
 
+  const deleteToken = (key: any)=>{
+    console.log("deleting", key);
+    console.log("deleting");
+    setDisplayedTokens((prevState) => {
+      const { [key]: _, ...rest } = prevState;
+      return rest;
+  })};
+
   return (
     <div className="app-container">
       <div className="map-container">
         <BattleMap
-          {...{
-            showGrid: showGrid,
-            backgroundImgPath: backgroundImgPath,
-            tokens: displayedTokens,
-          }}
+          showGrid={showGrid}
+          backgroundImgPath={backgroundImgPath}
+          tokens={displayedTokens}
+          deleteToken={deleteToken}
         />
       </div>
       <div className="controls-container">
