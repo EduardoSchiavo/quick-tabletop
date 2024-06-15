@@ -12,7 +12,7 @@
   justify-content: center;
   align-items: center;
   /* border: 2px solid green; */
-  background-color: rgb(26, 26, 59);
+  background-color: rgb(37, 67, 54);
   padding: 10px;
   overflow: hidden;
 }
@@ -24,12 +24,12 @@
   justify-content: center;
   align-items: center;
   /* border: 2px solid blue; */
-  background-color: rgb(66, 66, 92);
+  background-color: rgb(107, 138, 122);
   padding: 10px;
 }
 
 .dropdown, .token-gallery-container {
-  background-color: darkkhaki;
+  background-color: rgb(183, 181, 151);
   margin-bottom: 20px;
 }
 
@@ -39,11 +39,10 @@
   flex-direction: column;
   padding: 5px;
   gap: 10px;
-  background-color: darkkhaki;
 }
 
 .token-item {
-  background-color: rgba(66, 66, 92, 0.6);
+  background-color: rgb(218, 211, 190);
   padding: 10px;
   display: flex;
   /* flex: 1; */
