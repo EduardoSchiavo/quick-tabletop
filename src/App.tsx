@@ -4,6 +4,7 @@ import BattleMap from "./BattleMap";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import TokenGallery from "./TokenGallery";
+import Header from "./Header";
 
 interface TokenData {
   name: string;
@@ -53,8 +54,6 @@ function App() {
   };
 
   const deleteToken = (key: any)=>{
-    console.log("deleting", key);
-    console.log("deleting");
     setDisplayedTokens((prevState) => {
       const { [key]: _, ...rest } = prevState;
       return rest;
@@ -71,8 +70,9 @@ function App() {
         />
       </div>
       <div className="controls-container">
+        <Header title="Quick Tabletop" imgPath="favicon.png"/>
         <div className="dropdown">
-          <label htmlFor="dropdown1">Chose your map:</label>
+          <label htmlFor="dropdown1">Select your map:</label>
           <Dropdown
             options={imageOptions}
             onChange={handleImageChange}
@@ -84,6 +84,7 @@ function App() {
           <label>Choose your token:</label>
           <TokenGallery tokens={tokenOptions} onAddToken={addToken} />
         </div>
+        <div className="vertical-line"></div>
         <div>
           <button onClick={clearAll}>Clear Tokens</button>
         </div>
