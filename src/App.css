@@ -6,9 +6,9 @@
 }
 
 .map-container {
-  width: 1500px; 
-  height: auto; 
-  /* display: flex; */
+  /* width: 1500px; 
+  height: auto;  */
+  flex: 3;
   justify-content: center;
   align-items: center;
   /* border: 2px solid green; */
@@ -18,35 +18,36 @@
 }
 
 .controls-container {
-  flex: 1; /* Takes up 25% of the available width */
+  flex: 0.5; 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
-  /* border: 2px solid blue; */
   background-color: rgb(107, 138, 122);
-  padding: 10px;
+  padding: 5px;
+  width: 100%;
 }
 
 .dropdown, .token-gallery-container {
   background-color: rgb(183, 181, 151);
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
+  margin: 20px;
+  width: 85%;
 }
 
 .token-gallery {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
   padding: 5px;
   gap: 10px;
-}
+  width: 100%;
+} 
 
 .token-item {
   background-color: rgb(218, 211, 190);
   padding: 10px;
   display: flex;
-  /* flex: 1; */
-  flex-direction: row;
+  /* flex-direction: row; */
   align-items: center;
   position: relative;
 }
@@ -58,10 +59,6 @@
 }
 
 .token-info {
-  display: flex;
-  /* flex: 1; */
-  flex-direction: row;
-  align-items: center;
   margin-top: 2px;
   width: 100%;
 }
@@ -74,9 +71,15 @@
 
 .token-info button {
   padding: 2px 5px;
-  /* width: 30px; */
   position: absolute;
   right: 10px; /* Distance from the right margin */
   top: 50%; /* Vertically center the button */
   transform: translateY(-50%); /* Adjust vertical centering */
+}
+
+.vertical-line {
+  width: 60%; /* Full width of the parent */
+  height: 1px; /* Thickness of the line */
+  background-color: rgb(218, 211, 190); /* Color of the line */
+  margin: 20px; /* Space between the gallery and the line */
 }
