@@ -24,8 +24,8 @@ const BattleMap = ({
   deleteToken,
 }: Props) => {
   const startingPos = {
-    x: 500,
-    y: 5,
+    x: 200,
+    y: 50,
   };
 
   const fixedWidth = 1500;

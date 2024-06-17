@@ -16,9 +16,9 @@ function App() {
   const [backgroundImgPath, setBackgroundImgPath] = useState(
     "/assets/default/maps/tavern.jpg"
   );
-  const [displayedTokens, setDisplayedTokens] = useState<object>([
-    { 0: { name: "default", imgPath: "/assets/default/tokens/dryf.jpg" } },
-  ]);
+  const [displayedTokens, setDisplayedTokens] = useState<object>(
+    { 0: { name: "default", imgPath: "/assets/default/tokens/dryf.jpg" } }
+  );
 
   const tokenOptions: TokenData[] = [
     { name: "Goblin", imgPath: "/assets/default/tokens/dryf.jpg" },
