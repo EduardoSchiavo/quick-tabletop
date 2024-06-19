@@ -1,7 +1,7 @@
 
 import useImage from 'use-image';
 import { Image } from 'react-konva';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Position{
   x: number;
@@ -14,24 +14,31 @@ interface Props {
     imgPath: string;
     x: number;
     y: number;
+    gridUnit: number;
     handleDeletion: (key: number)=>void;
 }
 
-const Token = ({id, name, imgPath, x, y, handleDeletion}: Props) => {
+const Token = ({id, name, imgPath, x, y, gridUnit, handleDeletion}: Props) => {
     const [image] = useImage(imgPath);
     const [position, setPosition] = useState({x, y})
-    const gridSize = 96; //TODO: pass as prop
 
     const handleDragEnd = ()=>{
 
-      const newX: number = Math.round(Math.round(position.x) / gridSize )*gridSize;
-      const newY: number = Math.round(Math.round(position.y) / gridSize )*gridSize;
+      const newX: number = Math.round(Math.round(position.x) / gridUnit )*gridUnit;
+      const newY: number = Math.round(Math.round(position.y) / gridUnit )*gridUnit;
       
       setPosition({x:newX, y:newY});
     }
 
+    useEffect(() => {
+      // Recalculate position based on new gridUnit
+      const newX = Math.round(x / gridUnit) * gridUnit;
+      const newY = Math.round(y / gridUnit) * gridUnit;
+      setPosition({ x: newX, y: newY });
+    }, [gridUnit, x, y]);
+
     return <Image  draggable 
-    width={96} height={96} x={position.x} y={position.y} 
+    width={gridUnit} height={gridUnit} x={position.x} y={position.y} 
     onDragMove={(e) => setPosition({
       x: e.target.x(),
       y: e.target.y()
