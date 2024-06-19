@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 import BattleMap from "./BattleMap";
 import Dropdown from "react-dropdown";
@@ -16,9 +17,10 @@ function App() {
   const [backgroundImgPath, setBackgroundImgPath] = useState(
     "/assets/default/maps/tavern.jpg"
   );
-  const [displayedTokens, setDisplayedTokens] = useState<object>([
-    { 0: { name: "default", imgPath: "/assets/default/tokens/dryf.jpg" } },
-  ]);
+  const defaultToken =  { [uuidv4()] : { name: "default", imgPath: "/assets/default/tokens/dryf.jpg"} };
+  const [displayedTokens, setDisplayedTokens] = useState<object>(
+    defaultToken
+  );
 
   const tokenOptions: TokenData[] = [
     { name: "Goblin", imgPath: "/assets/default/tokens/dryf.jpg" },
@@ -39,8 +41,8 @@ function App() {
 
   const addToken = (token: TokenData) => {
     setDisplayedTokens((displayedTokens) => {
-      const keys = Object.keys(displayedTokens).map(Number);
-      const newKey = keys.length > 0 ? Math.max(...keys) + 1 : 0;
+      const keys = Object.keys(displayedTokens).map(String);
+      const newKey = uuidv4();
       return { ...displayedTokens, [newKey]: token };
     });
   };
@@ -53,7 +55,7 @@ function App() {
     setBackgroundImgPath(option.value);
   };
 
-  const deleteToken = (key: any)=>{
+  const deleteToken = (key: typeof uuidv4 )=>{
     setDisplayedTokens((prevState) => {
       const { [key]: _, ...rest } = prevState;
       return rest;
@@ -97,8 +99,6 @@ function App() {
       </div>
     </div>
   );
-
-  // return <BattleMap/>;
 }
 
 export default App;

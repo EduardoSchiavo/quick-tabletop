@@ -23,19 +23,19 @@ const BattleMap = ({
   tokens,
   deleteToken,
 }: Props) => {
+
+  const gridSize = 96;
   const startingPos = {
-    x: 500,
-    y: 5,
+    x: gridSize,
+    y: gridSize,
   };
 
   const fixedWidth = 1500;
   const fixedHeight = 1500;
   console.log(tokens);
 
-  const handleDeletion = (key: number, pos: { x: number; y: number }) => {
-    if (pos.x > fixedWidth || pos.y > 1000) {
-      deleteToken(key);
-    }
+  const handleDeletion = (key: number) => {
+    deleteToken(key);
   };
 
   return (
@@ -45,14 +45,15 @@ const BattleMap = ({
       </Layer>
       {showGrid && <Grid />}
       <Layer>
-        {Object.entries(tokens).map(([key, token]) => {
+        {Object.entries(tokens).map(([key, token], i) => {
           return (
             <Token
+              key={key}
               id={key}
               name={token.name}
               imgPath={token.imgPath}
-              x={startingPos.x}
-              y={startingPos.y}
+              x={startingPos.x+(i%3*gridSize)}
+              y={startingPos.y+(i%2*gridSize)}
               handleDeletion={handleDeletion}
             />
           );

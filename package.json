@@ -10,13 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/uuid": "^9.0.8",
     "konva": "^9.3.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropdown": "^1.11.0",
     "react-konva": "^18.2.10",
     "react-select": "^5.8.0",
-    "use-image": "^1.1.1"
+    "use-image": "^1.1.1",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
