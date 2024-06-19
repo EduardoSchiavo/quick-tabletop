@@ -9,13 +9,12 @@ interface Position{
 }
 
 interface Props {
-    // key: string;
     id: any;
     name: string;
     imgPath: string;
     x: number;
     y: number;
-    handleDeletion: (key: number, pos: Position)=>void;
+    handleDeletion: (key: number)=>void;
 }
 
 const Token = ({id, name, imgPath, x, y, handleDeletion}: Props) => {
@@ -29,8 +28,6 @@ const Token = ({id, name, imgPath, x, y, handleDeletion}: Props) => {
       const newY: number = Math.round(Math.round(position.y) / gridSize )*gridSize;
       
       setPosition({x:newX, y:newY});
-      handleDeletion(id, position);
-    
     }
 
     return <Image  draggable 
@@ -40,7 +37,11 @@ const Token = ({id, name, imgPath, x, y, handleDeletion}: Props) => {
       y: e.target.y()
   })}
     onDragEnd={handleDragEnd}
-    image={image} />;
+    onDblClick={()=>{handleDeletion(id)}}
+    image={image} 
+    cornerRadius={50}
+    stroke="black"
+    strokeWidth={5}/>;
   };
 
 export default Token;
