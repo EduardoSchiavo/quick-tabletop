@@ -15,7 +15,9 @@ interface Props {
   showGrid: boolean;
   backgroundImgPath: string;
   tokens: object;
-  deleteToken: (key: any) => void;
+  deleteToken: (key: string) => void;
+  handleTokenMove: (key: string, x: number, y: number) => void;
+
 }
 
 const BattleMap = ({
@@ -23,12 +25,12 @@ const BattleMap = ({
   backgroundImgPath,
   tokens,
   deleteToken,
+  handleTokenMove
 }: Props) => {
   const initialGridUnit = 96;
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [gridUnit, setGridUnit] = useState(initialGridUnit);
-
 
   const startingPos = {
     x: gridUnit,
@@ -39,8 +41,13 @@ const BattleMap = ({
   const gridHeight = 9 * gridUnit;
 
   const handleDeletion = (key: number) => {
+    console.log("deleting")
     deleteToken(key);
   };
+
+  const handleMove = (key: string, x: number, y: number) => {
+    handleTokenMove(key, x, y);
+  }
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -82,10 +89,11 @@ const BattleMap = ({
               id={key}
               name={token.name}
               imgPath={token.imgPath}
-              x={startingPos.x + (i % 3) * gridUnit}
-              y={startingPos.y + (i % 2) * gridUnit}
+              x={token.x}
+              y={token.y}
               gridUnit={gridUnit}
               handleDeletion={handleDeletion}
+              handleMove={handleMove}
             />
           );
         })}

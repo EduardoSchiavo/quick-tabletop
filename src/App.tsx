@@ -17,10 +17,10 @@ function App() {
   const [backgroundImgPath, setBackgroundImgPath] = useState(
     "/assets/default/maps/tavern.jpg"
   );
-  const defaultToken =  { [uuidv4()] : { name: "default", imgPath: "/assets/default/tokens/dryf.jpg"} };
-  const [displayedTokens, setDisplayedTokens] = useState<object>(
-    defaultToken
-  );
+  const defaultToken = {
+    [uuidv4()]: { name: "default", imgPath: "/assets/default/tokens/dryf.jpg" },
+  };
+  const [displayedTokens, setDisplayedTokens] = useState<object>({}); //TODO: define object type
 
   const tokenOptions: TokenData[] = [
     { name: "Goblin", imgPath: "/assets/default/tokens/dryf.jpg" },
@@ -29,21 +29,32 @@ function App() {
     { name: "Witch", imgPath: "/assets/default/tokens/Eldera.jpg" },
   ];
 
-
   const imageOptions = [
     { value: "/assets/default/maps/tavern.jpg", label: "Tavern" },
     { value: "/assets/default/maps/tavern-scribbled.jpg", label: "Scribbled" },
   ];
+
+  const gridUnit = 96;
 
   const toggleGrid = () => {
     setShowGrid(!showGrid);
   };
 
   const addToken = (token: TokenData) => {
+    const startingPos = {
+      x: gridUnit,
+      y: gridUnit,
+    };
+    const numberOfDisplayedTokens = Object.entries(displayedTokens).length;
+    const newToken = {
+      ...token,
+      x: startingPos.x + (numberOfDisplayedTokens % 3) * gridUnit,
+      y: startingPos.y + (numberOfDisplayedTokens % 2) * gridUnit,
+      gridUnit: gridUnit,
+    };
     setDisplayedTokens((displayedTokens) => {
-      const keys = Object.keys(displayedTokens).map(String);
       const newKey = uuidv4();
-      return { ...displayedTokens, [newKey]: token };
+      return { ...displayedTokens, [newKey]: newToken };
     });
   };
 
@@ -55,11 +66,24 @@ function App() {
     setBackgroundImgPath(option.value);
   };
 
-  const deleteToken = (key: typeof uuidv4 )=>{
+  const deleteToken = (key: string) => {
+    console.log("DELETING");
     setDisplayedTokens((prevState) => {
+      console.log({ prevState });
       const { [key]: _, ...rest } = prevState;
+      console.log({ rest });
       return rest;
-  })};
+    });
+  };
+
+  const handleTokenMove = (key: string, x: number, y: number) => {
+    const newTokens: { [key: string]: { x: number; y: number } } = {
+      ...displayedTokens,
+    };
+    newTokens[key].x = x;
+    newTokens[key].y = y;
+    setDisplayedTokens(newTokens);
+  };
 
   return (
     <div className="app-container">
@@ -69,10 +93,11 @@ function App() {
           backgroundImgPath={backgroundImgPath}
           tokens={displayedTokens}
           deleteToken={deleteToken}
+          handleTokenMove={handleTokenMove}
         />
       </div>
       <div className="controls-container">
-        <Header title="Quick Tabletop" imgPath="favicon.png"/>
+        <Header title="Quick Tabletop" imgPath="favicon.png" />
         <div className="dropdown">
           <label htmlFor="dropdown1">Select your map:</label>
           <Dropdown
