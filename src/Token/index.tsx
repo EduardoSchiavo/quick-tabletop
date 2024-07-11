@@ -1,7 +1,8 @@
 
 import useImage from 'use-image';
 import { Image } from 'react-konva';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { KonvaEventObject } from 'konva/lib/Node';
 
 interface Position{
   x: number;
@@ -14,28 +15,36 @@ interface Props {
     imgPath: string;
     x: number;
     y: number;
+    gridUnit: number;
     handleDeletion: (key: number)=>void;
+    handleMove: (key: string, x: number, y: number)=>void; 
 }
 
-const Token = ({id, name, imgPath, x, y, handleDeletion}: Props) => {
+const Token = ({id, name, imgPath, x, y, gridUnit, handleDeletion, handleMove}: Props) => {
     const [image] = useImage(imgPath);
-    const [position, setPosition] = useState({x, y})
-    const gridSize = 96; //TODO: pass as prop
+    // const [position, setPosition] = useState({x:60 , y:60})
 
-    const handleDragEnd = ()=>{
-
-      const newX: number = Math.round(Math.round(position.x) / gridSize )*gridSize;
-      const newY: number = Math.round(Math.round(position.y) / gridSize )*gridSize;
+    const handleDragEnd = (e)=>{
+      handleMove(id, e.target.x(), e.target.y());
+      // const newX: number = Math.round(Math.round(x) / gridUnit )*gridUnit;
+      // const newY: number = Math.round(Math.round(y) / gridUnit )*gridUnit;
       
-      setPosition({x:newX, y:newY});
+      // handleMove(newX, newY);  
     }
 
+    // useEffect(() => {
+    //   // Recalculate position based on new gridUnit
+    //   const newX = Math.round(position.x / gridUnit) * gridUnit;
+    //   const newY = Math.round(position.y / gridUnit) * gridUnit;
+    //   setPosition({ x: newX, y: newY });
+    // }, [gridUnit, position]);
+
     return <Image  draggable 
-    width={96} height={96} x={position.x} y={position.y} 
-    onDragMove={(e) => setPosition({
-      x: e.target.x(),
-      y: e.target.y()
-  })}
+    width={gridUnit} height={gridUnit} x={x} y={y} 
+  //   onDragMove={(e) => setPosition({
+  //     x: e.target.x(),
+  //     y: e.target.y()
+  // })}
     onDragEnd={handleDragEnd}
     onDblClick={()=>{handleDeletion(id)}}
     image={image} 
