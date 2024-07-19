@@ -35,6 +35,12 @@
   width: 85%;
 }
 
+.dropdown label,
+.token-gallery-container label {
+  padding-left: 5px; /* Adjust the value as needed */
+}
+
+
 .token-gallery {
   display: flex;
   flex-direction: column;

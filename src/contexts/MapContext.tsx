@@ -9,7 +9,7 @@ interface TokenData {
   tokenSize: number;
 }
 
-interface MapState {
+interface MapState {    
   showGrid: boolean;
   backgroundImgPath: string;
   displayedTokens: Record<string, TokenData>;
@@ -17,13 +17,12 @@ interface MapState {
 }
 
 interface MapDispatch {
-  //   setShowGrid: React.Dispatch<React.SetStateAction<boolean>>;
-  setBackgroundImgPath: React.Dispatch<React.SetStateAction<string>>;
+  changeBackgroundImage: (imgPath: string) => void;
   setDisplayedTokens: React.Dispatch<
     React.SetStateAction<Record<string, TokenData>>
   >;
   setGridUnit: React.Dispatch<React.SetStateAction<number>>;
-  addToken: (token: Omit<TokenData, "x" | "y" | "gridUnit">) => void;
+  addToken: (token: TokenData) => void;
   clearAllTokens: () => void;
   toggleGrid: () => void;
   moveToken: (key: string, x: number, y: number) => void;
@@ -43,8 +42,7 @@ export const MapProvider = ({ children }: { children: ReactNode }) => {
   >({});
   const [gridUnit, setGridUnit] = useState(96);
 
-
-const addToken = (newToken: TokenData) => {
+  const addToken = (newToken: TokenData) => {
     setDisplayedTokens((prevTokens) => {
       const newKey = uuidv4();
       return { ...prevTokens, [newKey]: newToken };
@@ -61,14 +59,18 @@ const addToken = (newToken: TokenData) => {
   };
 
   const deleteToken = (key: string) => {
-      setDisplayedTokens((prevTokens) => {
-        const { [key]: _, ...rest } = prevTokens;
-        return rest;
-      });
-    };
+    setDisplayedTokens((prevTokens) => {
+      const { [key]: _, ...rest } = prevTokens;
+      return rest;
+    });
+  };
 
   const toggleGrid = () => {
     setShowGrid(!showGrid);
+  };
+
+  const changeBackgroundImage = (imgPath: string) => {
+    setBackgroundImgPath(imgPath);
   };
 
   return (
@@ -78,7 +80,7 @@ const addToken = (newToken: TokenData) => {
       <MapDispatchContext.Provider
         value={{
           toggleGrid,
-          setBackgroundImgPath,
+          changeBackgroundImage,
           setDisplayedTokens,
           setGridUnit,
           addToken,

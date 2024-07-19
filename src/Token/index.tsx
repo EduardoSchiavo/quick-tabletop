@@ -25,10 +25,9 @@ const Token = ({
   y,
   handleDoubleClick,
   handleDragEnd,
-  onDrag
+  onDrag,
 }: Props) => {
   const [image] = useImage(imgPath);
-
 
   return (
     <Image
@@ -38,9 +37,7 @@ const Token = ({
       x={x}
       y={y}
       onDragEnd={handleDragEnd}
-      onDblClick={() => {
-        handleDoubleClick;
-      }}
+      onDblClick={handleDoubleClick}
       onDragMove={onDrag}
       image={image}
       cornerRadius={50}

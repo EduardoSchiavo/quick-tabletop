@@ -9,12 +9,9 @@ import { useMapState, useMapDispatch } from "../contexts/MapContext";
 import { KonvaPointerEvent } from "konva/lib/PointerEvents";
 import { KonvaEventObject } from "konva/lib/Node";
 
-
-
 const BattleMap = () => {
-
-
-  const { showGrid, backgroundImgPath, displayedTokens, gridUnit } = useMapState();
+  const { showGrid, backgroundImgPath, displayedTokens, gridUnit } =
+    useMapState();
   const { setGridUnit, moveToken, deleteToken } = useMapDispatch();
 
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
@@ -23,30 +20,26 @@ const BattleMap = () => {
   const gridWidth = 14 * gridUnit;
   const gridHeight = 9 * gridUnit;
 
-
   useEffect(() => {
     const handleResize = () => {
       const newWidth = window.innerWidth;
       const newHeight = window.innerHeight;
       setWindowHeight(newHeight);
       setWindowWidth(newWidth);
-      // const newGridUnit = Math.min(96, newWidth / 14, newHeight / 9);
-      // setGridUnit(newGridUnit);
-
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleTokenMove = (key: string, e: KonvaEventObject<DragEvent>) => {
     const x = Math.round(Math.round(e.target.x()) / gridUnit) * gridUnit;
     const y = Math.round(Math.round(e.target.y()) / gridUnit) * gridUnit;
+    // UNCOMMENT TO FIX SNAPPING
     const target = e.target;
-    target.setPosition({x, y}) 
-    moveToken(key, x, y)
+    target.setPosition({ x, y });
+    moveToken(key, x, y);
   };
-
 
   return (
     <Stage draggable width={windowWidth} height={windowHeight}>
@@ -75,10 +68,11 @@ const BattleMap = () => {
               x={token.x}
               y={token.y}
               tokenSize={gridUnit}
-              handleDoubleClick={() => deleteToken(key)}
+              handleDoubleClick={() => {
+                deleteToken(key);
+              }}
               handleDragEnd={(e) => handleTokenMove(key, e)}
               // onDrag={(e) => handleTokenMove(key, e)}
-
             />
           );
         })}
