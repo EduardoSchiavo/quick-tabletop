@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useMapState, useMapDispatch } from "../contexts/MapContext";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
@@ -30,7 +29,7 @@ const GamePage = () => {
 
   const imageOptions: ImageOption[] = [
     { value: "/assets/default/maps/tavern.jpg", label: "Tavern" },
-    { value: "/assets/default/maps/tavern-scribbled.jpg", label: "Scribbled" },
+    { value: "/assets/default/maps/forest.jpg", label: "Forest" },
   ];
 
   const handleImageChange = (option: any) => {
@@ -57,7 +56,9 @@ const GamePage = () => {
         <div className="token-gallery-container">
           <label>Choose your token:</label>
           <TokenGallery tokens={tokenOptions} />
+          <div> Double click on a Token to delete it</div>
         </div>
+        
         <div className="vertical-line"></div>
         <div>
           <button onClick={clearAllTokens}>Clear Tokens</button>

@@ -1,8 +1,9 @@
 import useImage from "use-image";
-import { Image } from "react-konva";
+import { Image,} from "react-konva";
 import { useMapDispatch, useMapState } from "../contexts/MapContext";
 import { KonvaPointerEvent } from "konva/lib/PointerEvents";
 import { KonvaEventObject } from "konva/lib/Node";
+import { useState } from "react";
 
 interface Props {
   id: any;

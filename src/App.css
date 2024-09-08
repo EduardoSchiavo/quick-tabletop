@@ -40,6 +40,11 @@
   padding-left: 5px; /* Adjust the value as needed */
 }
 
+.token-gallery-container div {
+  padding-left: 5px; /* or adjust this value as necessary */
+}
+
+
 
 .token-gallery {
   display: flex;
