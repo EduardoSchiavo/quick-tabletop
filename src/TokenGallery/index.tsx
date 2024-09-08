@@ -1,4 +1,5 @@
 import React from "react";
+import { useMapDispatch, useMapState } from "../contexts/MapContext";
 
 interface TokenData {
   name: string;
@@ -7,10 +8,26 @@ interface TokenData {
 
 interface TokenGalleryProps {
   tokens: TokenData[];
-  onAddToken: (token: TokenData) => void;
 }
 
-const TokenGallery: React.FC<TokenGalleryProps> = ({ tokens, onAddToken }) => {
+const TokenGallery: React.FC<TokenGalleryProps> = ({ tokens }) => {
+  const { displayedTokens, gridUnit } = useMapState();
+  const { addToken } = useMapDispatch();
+
+  const handleButtonClick = (
+    token: Omit<TokenData, "x" | "y" | "gridUnit">
+  ) => {
+    const startingPos = { x: gridUnit, y: gridUnit };
+    const numberOfDisplayedTokens = Object.entries(displayedTokens).length;
+    const newToken = {
+      ...token,
+      x: startingPos.x + (numberOfDisplayedTokens % 3) * gridUnit,
+      y: startingPos.y + (numberOfDisplayedTokens % 2) * gridUnit,
+      tokenSize: gridUnit,
+    };
+    addToken(newToken);
+  };
+
   return (
     <div className="token-gallery">
       {tokens.map((token, index) => (
@@ -18,7 +35,7 @@ const TokenGallery: React.FC<TokenGalleryProps> = ({ tokens, onAddToken }) => {
           <img src={token.imgPath} alt={token.name} className="token-image" />
           <div className="token-info">
             <span>{token.name} </span>
-            <button onClick={() => onAddToken(token)}>+</button>
+            <button onClick={() => handleButtonClick(token)}>+</button>
           </div>
         </div>
       ))}
