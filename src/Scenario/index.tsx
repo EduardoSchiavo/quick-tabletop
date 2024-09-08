@@ -2,14 +2,17 @@ import useImage from 'use-image';
 import { Image } from 'react-konva';
 
 interface Props {
+  width: number;
+  height: number;
   imgPath: string;
 }
 
-const Scenario = ({imgPath}: Props) => {
+//just a wrapper around image. Do I need this?
+const Scenario = ({width, height, imgPath}: Props) => {
     
     const [image, status] = useImage(imgPath);
 
-    return <Image  height={864} width={1344} image={image} />;
+    return <Image  height={height} width={width} image={image} />;
   };
 
 

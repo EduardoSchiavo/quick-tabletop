@@ -1,47 +1,51 @@
-
-import useImage from 'use-image';
-import { Image } from 'react-konva';
-import { useState } from 'react';
-
-interface Position{
-  x: number;
-  y: number;
-}
+import useImage from "use-image";
+import { Image,} from "react-konva";
+import { useMapDispatch, useMapState } from "../contexts/MapContext";
+import { KonvaPointerEvent } from "konva/lib/PointerEvents";
+import { KonvaEventObject } from "konva/lib/Node";
+import { useState } from "react";
 
 interface Props {
-    id: any;
-    name: string;
-    imgPath: string;
-    x: number;
-    y: number;
-    handleDeletion: (key: number)=>void;
+  id: any;
+  name: string;
+  imgPath: string;
+  tokenSize: number;
+  x: number;
+  y: number;
+  handleDragEnd?: (e: KonvaEventObject<DragEvent>) => void;
+  handleDoubleClick?: () => void;
+  onDrag?: (e: KonvaEventObject<DragEvent>) => void;
 }
 
-const Token = ({id, name, imgPath, x, y, handleDeletion}: Props) => {
-    const [image] = useImage(imgPath);
-    const [position, setPosition] = useState({x, y})
-    const gridSize = 96; //TODO: pass as prop
+const Token = ({
+  id,
+  name,
+  imgPath,
+  tokenSize,
+  x,
+  y,
+  handleDoubleClick,
+  handleDragEnd,
+  onDrag,
+}: Props) => {
+  const [image] = useImage(imgPath);
 
-    const handleDragEnd = ()=>{
-
-      const newX: number = Math.round(Math.round(position.x) / gridSize )*gridSize;
-      const newY: number = Math.round(Math.round(position.y) / gridSize )*gridSize;
-      
-      setPosition({x:newX, y:newY});
-    }
-
-    return <Image  draggable 
-    width={96} height={96} x={position.x} y={position.y} 
-    onDragMove={(e) => setPosition({
-      x: e.target.x(),
-      y: e.target.y()
-  })}
-    onDragEnd={handleDragEnd}
-    onDblClick={()=>{handleDeletion(id)}}
-    image={image} 
-    cornerRadius={50}
-    stroke="black"
-    strokeWidth={5}/>;
-  };
+  return (
+    <Image
+      draggable
+      width={tokenSize}
+      height={tokenSize}
+      x={x}
+      y={y}
+      onDragEnd={handleDragEnd}
+      onDblClick={handleDoubleClick}
+      onDragMove={onDrag}
+      image={image}
+      cornerRadius={50}
+      stroke="black"
+      strokeWidth={5}
+    />
+  );
+};
 
 export default Token;
