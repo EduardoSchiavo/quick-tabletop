@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode } from "react";
+import React, { createContext, useState, useContext, ReactNode, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 interface TokenData {
@@ -32,15 +32,34 @@ interface MapDispatch {
 const MapStateContext = createContext<MapState | undefined>(undefined);
 const MapDispatchContext = createContext<MapDispatch | undefined>(undefined);
 
+
+const getInitialBackgroundImgPath = (): string => {
+  const savedBackgroundImgPath = localStorage.getItem("backgroundImgPath");
+  return savedBackgroundImgPath || "/assets/default/maps/tavern.jpg";
+}
+
+const getInitialDisplayedTokens = (): Record<string, TokenData> => {
+  const savedTokens = localStorage.getItem("displayedTokens");
+  return savedTokens ? JSON.parse(savedTokens) : {};
+};
+
 export const MapProvider = ({ children }: { children: ReactNode }) => {
   const [showGrid, setShowGrid] = useState(true);
   const [backgroundImgPath, setBackgroundImgPath] = useState(
-    "/assets/default/maps/tavern.jpg"
+    getInitialBackgroundImgPath()
   );
   const [displayedTokens, setDisplayedTokens] = useState<
     Record<string, TokenData>
-  >({});
+  >(getInitialDisplayedTokens());
   const [gridUnit, setGridUnit] = useState(96);
+
+  useEffect(() => {
+    localStorage.setItem("backgroundImgPath", backgroundImgPath);
+  }, [backgroundImgPath]);
+
+  useEffect(() => {
+    localStorage.setItem("displayedTokens", JSON.stringify(displayedTokens));
+  }, [displayedTokens]);
 
   const addToken = (newToken: TokenData) => {
     setDisplayedTokens((prevTokens) => {
