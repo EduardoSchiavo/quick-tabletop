@@ -8,7 +8,13 @@ You can open it on your browser at: [quik-tabletop](https://quick-tabletop.onren
 
 ## Single Session - no persistency
 
-This is a toy-model of the frontend, not an actual VTT. Meaning nothing is persistent.
-If you refresh you will lose your changes.
+This is a toy-model of the frontend, not an actual VTT.
 
-You can not have multiple players accessing and editing the same sessions, as there is currently no backend connected to it.
+You cannot have multiple players accessing and editing the same sessions, as there is currently no backend connected to it.
+
+The token position and map selection are saved to localStorage to avoid losing them on refresh.
+
+## Missing features
+
+There are many features missing that would be required to make this usable in an actual game session (e.g. selection, distance measurements, different token size...)
+This is just something I made for fun to play around with React. Actual development of a working VTT will continue in a different repo.
