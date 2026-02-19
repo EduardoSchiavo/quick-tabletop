@@ -1,19 +1,17 @@
 import { test, expect } from "@playwright/test";
-import {
-  getBackgroundFromStorage,
-  clearStorage,
-} from "./helpers/localStorage";
+import { getBackgroundImageSrc } from "./helpers/gameState";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("/?session=test");
-  await clearStorage(page);
-  await page.reload();
+  const resp = await page.request.post("http://localhost:3000/session");
+  const { sessionId } = await resp.json();
+  await page.goto(`/?session=${sessionId}`);
 });
 
 test.describe("Map Selection", () => {
   test("Default map is tavern", async ({ page }) => {
-    const bg = await getBackgroundFromStorage(page);
-    expect(bg).toBe("/assets/default/maps/tavern.jpg");
+    await expect
+      .poll(() => getBackgroundImageSrc(page))
+      .toContain("tavern.jpg");
   });
 
   test("Change to Forest map", async ({ page }) => {
@@ -21,25 +19,23 @@ test.describe("Map Selection", () => {
     await page.locator(".Dropdown-option").filter({ hasText: "Forest" }).click();
 
     await expect
-      .poll(() => getBackgroundFromStorage(page))
-      .toBe("/assets/default/maps/forest.jpg");
+      .poll(() => getBackgroundImageSrc(page))
+      .toContain("forest.jpg");
   });
 
   test("Switch back to Tavern", async ({ page }) => {
-    // Select Forest first
     await page.locator(".Dropdown-control").click();
     await page.locator(".Dropdown-option").filter({ hasText: "Forest" }).click();
 
     await expect
-      .poll(() => getBackgroundFromStorage(page))
-      .toBe("/assets/default/maps/forest.jpg");
+      .poll(() => getBackgroundImageSrc(page))
+      .toContain("forest.jpg");
 
-    // Switch back to Tavern
     await page.locator(".Dropdown-control").click();
     await page.locator(".Dropdown-option").filter({ hasText: "Tavern" }).click();
 
     await expect
-      .poll(() => getBackgroundFromStorage(page))
-      .toBe("/assets/default/maps/tavern.jpg");
+      .poll(() => getBackgroundImageSrc(page))
+      .toContain("tavern.jpg");
   });
 });

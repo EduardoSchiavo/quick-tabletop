@@ -24,7 +24,7 @@ function App() {
   }
 
   return (
-    <MapProvider>
+    <MapProvider sessionId={sessionId}>
       <GamePage />
     </MapProvider>
   );

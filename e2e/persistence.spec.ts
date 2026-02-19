@@ -1,15 +1,13 @@
 import { test, expect } from "@playwright/test";
-import {
-  getTokenCount,
-  getTokensFromStorage,
-  getBackgroundFromStorage,
-  clearStorage,
-} from "./helpers/localStorage";
+import { getTokenCount, getKonvaTokens, getBackgroundImageSrc } from "./helpers/gameState";
+
+let sessionId: string;
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("/?session=test");
-  await clearStorage(page);
-  await page.reload();
+  const resp = await page.request.post("http://localhost:3000/session");
+  const body = await resp.json();
+  sessionId = body.sessionId;
+  await page.goto(`/?session=${sessionId}`);
 });
 
 test.describe("Persistence", () => {
@@ -20,20 +18,17 @@ test.describe("Persistence", () => {
       .getByRole("button", { name: "+" });
 
     await addGoblin.click();
+    await expect.poll(() => getTokenCount(page)).toBe(1);
     await addGoblin.click();
-
-    await expect
-      .poll(() => getTokenCount(page))
-      .toBe(2);
+    await expect.poll(() => getTokenCount(page)).toBe(2);
 
     await page.reload();
 
-    expect(await getTokenCount(page)).toBe(2);
+    await expect.poll(() => getTokenCount(page)).toBe(2);
 
-    const tokens = await getTokensFromStorage(page);
-    const tokenList = Object.values(tokens);
-    expect(tokenList[0].name).toBe("Goblin");
-    expect(tokenList[1].name).toBe("Goblin");
+    const tokens = await getKonvaTokens(page);
+    expect(tokens[0].name).toBe("Goblin");
+    expect(tokens[1].name).toBe("Goblin");
   });
 
   test("Map survives reload", async ({ page }) => {
@@ -41,14 +36,14 @@ test.describe("Persistence", () => {
     await page.locator(".Dropdown-option").filter({ hasText: "Forest" }).click();
 
     await expect
-      .poll(() => getBackgroundFromStorage(page))
-      .toBe("/assets/default/maps/forest.jpg");
+      .poll(() => getBackgroundImageSrc(page))
+      .toContain("forest.jpg");
 
     await page.reload();
 
-    expect(await getBackgroundFromStorage(page)).toBe(
-      "/assets/default/maps/forest.jpg"
-    );
+    await expect
+      .poll(() => getBackgroundImageSrc(page))
+      .toContain("forest.jpg");
   });
 
   test("Cleared state survives reload", async ({ page }) => {
@@ -58,11 +53,9 @@ test.describe("Persistence", () => {
       .getByRole("button", { name: "+" });
 
     await addGoblin.click();
+    await expect.poll(() => getTokenCount(page)).toBe(1);
     await addGoblin.click();
-
-    await expect
-      .poll(() => getTokenCount(page))
-      .toBe(2);
+    await expect.poll(() => getTokenCount(page)).toBe(2);
 
     await page.getByRole("button", { name: "Clear Tokens" }).click();
 
@@ -72,6 +65,6 @@ test.describe("Persistence", () => {
 
     await page.reload();
 
-    expect(await getTokenCount(page)).toBe(0);
+    await expect.poll(() => getTokenCount(page)).toBe(0);
   });
 });

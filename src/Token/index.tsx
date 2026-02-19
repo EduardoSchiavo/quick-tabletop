@@ -32,6 +32,7 @@ const Token = ({
 
   return (
     <Image
+      name={name}
       draggable
       width={tokenSize}
       height={tokenSize}

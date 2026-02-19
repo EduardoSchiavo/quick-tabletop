@@ -1,11 +1,10 @@
 import { test, expect } from "@playwright/test";
-import { clearStorage } from "./helpers/localStorage";
 import { getKonvaLayerCount } from "./helpers/canvas";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("/?session=test");
-  await clearStorage(page);
-  await page.reload();
+  const resp = await page.request.post("http://localhost:3000/session");
+  const { sessionId } = await resp.json();
+  await page.goto(`/?session=${sessionId}`);
 });
 
 test.describe("Grid Toggle", () => {

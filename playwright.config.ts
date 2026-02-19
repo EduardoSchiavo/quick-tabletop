@@ -19,9 +19,16 @@ export default defineConfig({
       use: { browserName: "chromium" },
     },
   ],
-  webServer: {
-    command: "bun run dev",
-    url: "http://localhost:5173",
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: [
+    {
+      command: "cd ../quick-tabletop-engine && go run main.go",
+      url: "http://localhost:3000/health",
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      command: "bun run dev",
+      url: "http://localhost:5173",
+      reuseExistingServer: !process.env.CI,
+    },
+  ],
 });

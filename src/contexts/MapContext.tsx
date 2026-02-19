@@ -1,15 +1,9 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from "react";
+import { createContext, useContext, ReactNode, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useGameSocket } from "../hooks/useGameSocket";
+import type { TokenData } from "../types/websocket";
 
-interface TokenData {
-  name: string;
-  imgPath: string;
-  x: number;
-  y: number;
-  tokenSize: number;
-}
-
-interface MapState {    
+interface MapState {
   showGrid: boolean;
   backgroundImgPath: string;
   displayedTokens: Record<string, TokenData>;
@@ -18,10 +12,6 @@ interface MapState {
 
 interface MapDispatch {
   changeBackgroundImage: (imgPath: string) => void;
-  setDisplayedTokens: React.Dispatch<
-    React.SetStateAction<Record<string, TokenData>>
-  >;
-  setGridUnit: React.Dispatch<React.SetStateAction<number>>;
   addToken: (token: TokenData) => void;
   clearAllTokens: () => void;
   toggleGrid: () => void;
@@ -32,76 +22,85 @@ interface MapDispatch {
 const MapStateContext = createContext<MapState | undefined>(undefined);
 const MapDispatchContext = createContext<MapDispatch | undefined>(undefined);
 
-
-const getInitialBackgroundImgPath = (): string => {
-  const savedBackgroundImgPath = localStorage.getItem("backgroundImgPath");
-  return savedBackgroundImgPath || "/assets/default/maps/tavern.jpg";
-}
-
-const getInitialDisplayedTokens = (): Record<string, TokenData> => {
-  const savedTokens = localStorage.getItem("displayedTokens");
-  return savedTokens ? JSON.parse(savedTokens) : {};
+const defaultState: MapState = {
+  displayedTokens: {},
+  backgroundImgPath: "/assets/default/maps/tavern.jpg",
+  showGrid: true,
+  gridUnit: 96,
 };
 
-export const MapProvider = ({ children }: { children: ReactNode }) => {
-  const [showGrid, setShowGrid] = useState(true);
-  const [backgroundImgPath, setBackgroundImgPath] = useState(
-    getInitialBackgroundImgPath()
+export const MapProvider = ({
+  children,
+  sessionId,
+}: {
+  children: ReactNode;
+  sessionId: string;
+}) => {
+  const { gameState, sendCommand } = useGameSocket(sessionId);
+
+  const state: MapState = gameState
+    ? {
+        showGrid: gameState.showGrid,
+        backgroundImgPath: gameState.backgroundImgPath,
+        displayedTokens: gameState.displayedTokens,
+        gridUnit: gameState.gridUnit,
+      }
+    : defaultState;
+
+  const addToken = useCallback(
+    (token: TokenData) => {
+      sendCommand({
+        type: "add_token",
+        payload: { id: uuidv4(), token },
+      });
+    },
+    [sendCommand]
   );
-  const [displayedTokens, setDisplayedTokens] = useState<
-    Record<string, TokenData>
-  >(getInitialDisplayedTokens());
-  const [gridUnit, setGridUnit] = useState(96);
 
-  useEffect(() => {
-    localStorage.setItem("backgroundImgPath", backgroundImgPath);
-  }, [backgroundImgPath]);
+  const clearAllTokens = useCallback(() => {
+    sendCommand({ type: "clear_tokens" });
+  }, [sendCommand]);
 
-  useEffect(() => {
-    localStorage.setItem("displayedTokens", JSON.stringify(displayedTokens));
-  }, [displayedTokens]);
+  const moveToken = useCallback(
+    (key: string, x: number, y: number) => {
+      sendCommand({
+        type: "move_token",
+        payload: { id: key, x, y },
+      });
+    },
+    [sendCommand]
+  );
 
-  const addToken = (newToken: TokenData) => {
-    setDisplayedTokens((prevTokens) => {
-      const newKey = uuidv4();
-      return { ...prevTokens, [newKey]: newToken };
-    });
-  };
+  const deleteToken = useCallback(
+    (key: string) => {
+      sendCommand({
+        type: "delete_token",
+        payload: { id: key },
+      });
+    },
+    [sendCommand]
+  );
 
-  const clearAllTokens = () => setDisplayedTokens({});
+  const toggleGrid = useCallback(() => {
+    sendCommand({ type: "toggle_grid" });
+  }, [sendCommand]);
 
-  const moveToken = (key: string, x: number, y: number) => {
-    setDisplayedTokens((prevTokens) => ({
-      ...prevTokens,
-      [key]: { ...prevTokens[key], x, y },
-    }));
-  };
-
-  const deleteToken = (key: string) => {
-    setDisplayedTokens((prevTokens) => {
-      const { [key]: _, ...rest } = prevTokens;
-      return rest;
-    });
-  };
-
-  const toggleGrid = () => {
-    setShowGrid(!showGrid);
-  };
-
-  const changeBackgroundImage = (imgPath: string) => {
-    setBackgroundImgPath(imgPath);
-  };
+  const changeBackgroundImage = useCallback(
+    (imgPath: string) => {
+      sendCommand({
+        type: "change_background",
+        payload: { imgPath },
+      });
+    },
+    [sendCommand]
+  );
 
   return (
-    <MapStateContext.Provider
-      value={{ showGrid, backgroundImgPath, displayedTokens, gridUnit }}
-    >
+    <MapStateContext.Provider value={state}>
       <MapDispatchContext.Provider
         value={{
           toggleGrid,
           changeBackgroundImage,
-          setDisplayedTokens,
-          setGridUnit,
           addToken,
           clearAllTokens,
           moveToken,
