@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "./index.css";
 
+const API = import.meta.env.VITE_API_URL || "";
+
 interface LandingPageProps {
   onSessionStart: (sessionId: string) => void;
 }
@@ -13,7 +15,7 @@ function LandingPage({ onSessionStart }: LandingPageProps) {
   const [serverOnline, setServerOnline] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/health")
+    fetch(`${API}/health`)
       .then((res) => setServerOnline(res.ok))
       .catch(() => setServerOnline(false));
   }, []);
@@ -22,7 +24,7 @@ function LandingPage({ onSessionStart }: LandingPageProps) {
     setError("");
     setCreating(true);
     try {
-      const res = await fetch("http://localhost:3000/session", {
+      const res = await fetch(`${API}/session`, {
         method: "POST",
       });
       if (!res.ok) {
@@ -48,7 +50,7 @@ function LandingPage({ onSessionStart }: LandingPageProps) {
     setError("");
     setJoining(true);
     try {
-      const res = await fetch(`http://localhost:3000/session/${trimmed}`);
+      const res = await fetch(`${API}/session/${trimmed}`);
       if (!res.ok) {
         throw new Error("Session not found");
       }

@@ -6,7 +6,11 @@ export function useGameSocket(sessionId: string) {
   const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    const ws = new WebSocket(`ws://localhost:3000/ws/${sessionId}`);
+    const apiUrl = import.meta.env.VITE_API_URL || "";
+    const wsUrl = apiUrl
+      ? apiUrl.replace(/^http/, "ws")
+      : `${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.host}`;
+    const ws = new WebSocket(`${wsUrl}/ws/${sessionId}`);
     wsRef.current = ws;
 
     ws.onmessage = (event) => {
