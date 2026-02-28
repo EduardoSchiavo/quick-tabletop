@@ -1,13 +1,14 @@
 import { createContext, useContext, ReactNode, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useGameSocket } from "../hooks/useGameSocket";
-import type { TokenData } from "../types/websocket";
+import type { TokenData, AreaTemplateData } from "../types/websocket";
 
 interface MapState {
   showGrid: boolean;
   backgroundImgPath: string;
   displayedTokens: Record<string, TokenData>;
   gridUnit: number;
+  areaTemplates: Record<string, AreaTemplateData>;
 }
 
 interface MapDispatch {
@@ -17,6 +18,10 @@ interface MapDispatch {
   toggleGrid: () => void;
   moveToken: (key: string, x: number, y: number) => void;
   deleteToken: (key: string) => void;
+  addAreaTemplate: (template: AreaTemplateData) => void;
+  moveAreaTemplate: (id: string, x: number, y: number) => void;
+  deleteAreaTemplate: (id: string) => void;
+  clearAreaTemplates: () => void;
 }
 
 const MapStateContext = createContext<MapState | undefined>(undefined);
@@ -27,6 +32,7 @@ const defaultState: MapState = {
   backgroundImgPath: "/assets/default/maps/tavern.jpg",
   showGrid: true,
   gridUnit: 96,
+  areaTemplates: {},
 };
 
 export const MapProvider = ({
@@ -44,6 +50,7 @@ export const MapProvider = ({
         backgroundImgPath: gameState.backgroundImgPath,
         displayedTokens: gameState.displayedTokens,
         gridUnit: gameState.gridUnit,
+        areaTemplates: gameState.areaTemplates ?? {},
       }
     : defaultState;
 
@@ -95,6 +102,40 @@ export const MapProvider = ({
     [sendCommand]
   );
 
+  const addAreaTemplate = useCallback(
+    (template: AreaTemplateData) => {
+      sendCommand({
+        type: "add_area_template",
+        payload: { id: uuidv4(), template },
+      });
+    },
+    [sendCommand]
+  );
+
+  const moveAreaTemplate = useCallback(
+    (id: string, x: number, y: number) => {
+      sendCommand({
+        type: "move_area_template",
+        payload: { id, x, y },
+      });
+    },
+    [sendCommand]
+  );
+
+  const deleteAreaTemplate = useCallback(
+    (id: string) => {
+      sendCommand({
+        type: "delete_area_template",
+        payload: { id },
+      });
+    },
+    [sendCommand]
+  );
+
+  const clearAreaTemplates = useCallback(() => {
+    sendCommand({ type: "clear_area_templates" });
+  }, [sendCommand]);
+
   return (
     <MapStateContext.Provider value={state}>
       <MapDispatchContext.Provider
@@ -105,6 +146,10 @@ export const MapProvider = ({
           clearAllTokens,
           moveToken,
           deleteToken,
+          addAreaTemplate,
+          moveAreaTemplate,
+          deleteAreaTemplate,
+          clearAreaTemplates,
         }}
       >
         {children}

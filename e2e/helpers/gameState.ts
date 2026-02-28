@@ -15,7 +15,7 @@ export async function getKonvaTokens(
     const stage = (window as any).Konva?.stages?.[0];
     if (!stage) return [];
     const layers = stage.getLayers();
-    const tokenLayer = layers[layers.length - 1];
+    const tokenLayer = layers.find((l: any) => l.name() === "tokens");
     if (!tokenLayer) return [];
     return tokenLayer.getChildren().map((node: any) => ({
       name: node.name?.() || "",
@@ -32,7 +32,7 @@ export async function getTokenCount(page: Page): Promise<number> {
     const stage = (window as any).Konva?.stages?.[0];
     if (!stage) return 0;
     const layers = stage.getLayers();
-    const tokenLayer = layers[layers.length - 1];
+    const tokenLayer = layers.find((l: any) => l.name() === "tokens");
     return tokenLayer ? tokenLayer.getChildren().length : 0;
   });
 }
@@ -44,7 +44,7 @@ export async function getBackgroundImageSrc(
     const stage = (window as any).Konva?.stages?.[0];
     if (!stage) return null;
     const layers = stage.getLayers();
-    const bgLayer = layers[0];
+    const bgLayer = layers.find((l: any) => l.name() === "background");
     if (!bgLayer) return null;
     const image = bgLayer.findOne("Image");
     if (!image) return null;
