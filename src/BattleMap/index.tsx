@@ -12,7 +12,7 @@ import { KonvaEventObject } from "konva/lib/Node";
 const BattleMap = () => {
   const { showGrid, backgroundImgPath, displayedTokens, gridUnit } =
     useMapState();
-  const { setGridUnit, moveToken, deleteToken } = useMapDispatch();
+  const { moveToken, deleteToken } = useMapDispatch();
 
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
