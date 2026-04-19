@@ -2,7 +2,7 @@
 
 A Mock Virtual Tabletop.
 
-You can open it on your browser at: [quik-tabletop](https://quick-tabletop.onrender.com) and play around with it
+You can open it on your browser at: [QuickTabletop](http://impproductions.org:8080/) and play around with it
 
 <img src="public/assets/default/screenshot.jpeg" alt="example" width="600" height="400" />
 
