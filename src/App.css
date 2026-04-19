@@ -6,7 +6,7 @@
 }
 
 .map-container {
-  /* width: 1500px; 
+  /* width: 1500px;
   height: auto;  */
   flex: 3;
   justify-content: center;
@@ -15,10 +15,11 @@
   background-color: rgb(37, 67, 54);
   padding: 10px;
   overflow: hidden;
+  position: relative;
 }
 
 .controls-container {
-  flex: 0.5; 
+  flex: 0.5;
   display: flex;
   flex-direction: column;
   justify-content: left;
@@ -26,6 +27,7 @@
   background-color: rgb(107, 138, 122);
   padding: 5px;
   width: 100%;
+  overflow-y: auto;
 }
 
 .dropdown, .token-gallery-container {
@@ -52,7 +54,7 @@
   padding: 5px;
   gap: 10px;
   width: 100%;
-} 
+}
 
 .token-item {
   background-color: rgb(218, 211, 190);
@@ -93,4 +95,136 @@
   height: 1px; /* Thickness of the line */
   background-color: rgb(218, 211, 190); /* Color of the line */
   margin: 20px; /* Space between the gallery and the line */
+}
+
+/* Measure button */
+.measure-btn {
+  padding: 6px 14px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  background-color: rgb(183, 181, 151);
+  border-radius: 4px;
+}
+
+.measure-btn.active {
+  background-color: rgb(255, 204, 0);
+  border-color: rgb(180, 140, 0);
+  font-weight: bold;
+}
+
+/* Zoom indicator */
+.zoom-indicator {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background-color: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+  z-index: 10;
+}
+
+.zoom-indicator button {
+  padding: 2px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-radius: 3px;
+}
+
+.zoom-indicator button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Area Template Gallery */
+.area-template-gallery {
+  background-color: rgb(183, 181, 151);
+  margin: 20px;
+  width: 85%;
+  padding: 5px;
+}
+
+.area-template-gallery > label {
+  padding-left: 5px;
+  font-weight: bold;
+}
+
+.template-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 5px;
+}
+
+.template-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.template-row > span:first-child {
+  min-width: 90px;
+  font-size: 14px;
+}
+
+.template-btn {
+  padding: 3px 10px;
+  cursor: pointer;
+  border: 1px solid #999;
+  background-color: rgb(218, 211, 190);
+  border-radius: 3px;
+  font-size: 13px;
+}
+
+.template-btn.active {
+  background-color: rgb(37, 67, 54);
+  color: #fff;
+  border-color: rgb(37, 67, 54);
+}
+
+.template-input {
+  width: 50px;
+  padding: 2px 4px;
+  font-size: 13px;
+}
+
+.color-swatches {
+  display: flex;
+  gap: 4px;
+}
+
+.color-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.color-swatch.active {
+  border-color: #000;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.template-slider {
+  width: 80px;
+}
+
+.template-actions {
+  gap: 8px;
+}
+
+.template-actions button {
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 13px;
 }

@@ -33,7 +33,7 @@ const Grid = ({ gridWidth, gridHeight, gridUnit }: Props) => {
   }
 
   return (
-    <Layer>
+    <Layer name="grid">
       {hLines}
       {vLines}
     </Layer>
