@@ -1,20 +1,31 @@
 # Quick Tabletop
 
-A Mock Virtual Tabletop.
+A virtual tabletop I'm building for fun!
 
-You can open it on your browser at: [QuickTabletop](http://impproductions.org:8080/) and play around with it
+You can try it out in your browser at [QuickTabletop](http://impproductions.org:8080/).
 
 <img src="public/assets/default/screenshot.jpeg" alt="example" width="600" height="400" />
 
-## Single Session - no persistency
+## Sessions
 
-This is a toy-model of the frontend, not an actual VTT.
+Sessions are handled by a backend written in Go. Users can connect to a session to simultaneously access its resources and move things around.
 
-You cannot have multiple players accessing and editing the same sessions, as there is currently no backend connected to it.
+Since this is a fun side project deployed on a small VPS, there are hard limits on the number of concurrent sessions and the number of players per session.
 
-The token position and map selection are saved to localStorage to avoid losing them on refresh.
+The session ID is what identifies a session - having the ID grants access to it and allows you to retrieve its persisted state.
 
-## Missing features
+This is a pet project in active development, not production-ready software. I make no guarantees about data persistence: I may clear the database from time to time, and any persisted sessions will be gone.
 
-There are many features missing that would be required to make this usable in an actual game session (e.g. selection, distance measurements, different token size...)
-This is just something I made for fun to play around with React. Actual development of a working VTT will continue in a different repo.
+## Assets
+
+The default asset pack is the only one currently available. I'm working on an asset manager to provide:
+
+- a larger asset selection
+- the ability to add personal assets
+- a better UX for managing assets
+
+## Status
+
+This project is currently paused — I'm parking it for a few months before picking it back up.
+
+
