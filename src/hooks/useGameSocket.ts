@@ -24,7 +24,14 @@ export function useGameSocket(sessionId: string) {
       console.error("WebSocket error:", err);
     };
 
+    const heartbeat = setInterval(() => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: "ping" }));
+      }
+    }, 30000);
+
     return () => {
+      clearInterval(heartbeat);
       ws.close();
       wsRef.current = null;
     };
